@@ -1,0 +1,45 @@
+
+version: "3.9"
+services:
+  # Backend service
+  backend:
+    build:
+      context: ./server  # Path to your backend folder
+      dockerfile: Dockerfile  # Path to the Dockerfile if not in the root
+    container_name: mindfulmotive-backend  # Correct placement for container name
+    ports:
+      - "4000:4000"  # Expose backend on port 4000
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/mindfulmotive_db  # Updated to port 5432 (default PostgreSQL port)
+    depends_on:
+      - db  # Make sure the backend starts after the database is ready
+
+  # Frontend service (Next.js)
+  frontend:
+    build:
+      context: ./frontend  # Path to your frontend folder
+    container_name: mindfulmotive-frontend  # Correct placement for container name
+    ports:
+      - "3000:3000"  # Expose frontend on port 3000
+    depends_on:
+      - backend  # Ensure backend is up before frontend
+    environment:
+      # If your frontend needs to reference the backend, you can set the API URL here
+      - API_URL=http://backend:4000  # Backend address in the Docker network
+
+  # PostgreSQL database service
+  db:
+    image: postgres:latest
+    container_name: mindfulmotive-db  # Correct placement for container name
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password  # Set this to whatever password you prefer
+      POSTGRES_DB: mindfulmotive_db  # Ensure this matches the DATABASE_URL in the backend
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    ports:
+      - "5432:5432"  # Expose database on port 5432 (default PostgreSQL port)
+
+# Persistent volume for PostgreSQL data
+volumes:
+  postgres-data:
