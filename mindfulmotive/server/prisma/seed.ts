@@ -1,8 +1,20 @@
+/// <reference types="node" />
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  // Create a default user first
+  const hashedPassword = await bcrypt.hash('password123', 10);
+  const defaultUser = await prisma.user.create({
+    data: {
+      name: 'Default User',
+      email: 'default@example.com',
+      password: hashedPassword,
+    },
+  });
+
   // Define categories and their associated affirmations
   const categoriesWithAffirmations = [
     {
@@ -48,12 +60,13 @@ async function main() {
       },
     });
 
-    // Create affirmations for each category
+    // Create affirmations for each category with user association
     for (const affirmationText of categoryData.affirmations) {
       await prisma.affirmation.create({
         data: {
           text: affirmationText,
           categoryId: category.id,
+          userId: defaultUser.id,  // Add the user association
         },
       });
     }

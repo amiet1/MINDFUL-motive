@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+*/node_modules/
+mindfulmotive/node_modules/
+mindfulmotive/server/node_modules/
+
+# Next.js
+.next/
+*/.next/
+mindfulmotive/.next/
+mindfulmotive/server/.next/
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# Build outputs
+dist/
+build/
+
+# Misc
+.DS_Store
+*.pem 
