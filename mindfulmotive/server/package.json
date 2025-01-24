@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "dependencies": {
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
     "next": "latest",
     "react": "latest",
@@ -12,7 +12,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.17.14",
     "@types/react": "19.0.7",
-    "prisma": "^6.1.0",
+    "prisma": "^6.2.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },

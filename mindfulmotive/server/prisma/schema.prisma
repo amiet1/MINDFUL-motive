@@ -22,6 +22,7 @@ model User {
   savedAffirmations Affirmation[]  @relation("SavedAffirmations")
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
+  scheduledNotifications ScheduledNotification[]
 }
 
 model Category {
@@ -29,6 +30,7 @@ model Category {
   name         String
   affirmations Affirmation[]
   users        User[]
+  scheduledNotifications ScheduledNotification[]
 }
 
 model Affirmation {
@@ -39,4 +41,14 @@ model Affirmation {
   userId       String         @map("user_id") // The user who saved this affirmation
   user         User           @relation("SavedAffirmations", fields: [userId], references: [id])
 
+}
+
+model ScheduledNotification {
+  id           String   @id @default(uuid())
+  userId       String
+  categoryId   String
+  scheduledFor DateTime
+  sent        Boolean  @default(false)
+  user         User     @relation(fields: [userId], references: [id])
+  category     Category @relation(fields: [categoryId], references: [id])
 }
